@@ -2,39 +2,24 @@
 
 namespace APPLICATION\Model {
 
-    require_once __DIR__ . '/../../layers/DataHub.php';
+    require_once __DIR__ . '/../../dependencies/GlobalCommon.php';
 
+    use GlobalCommon\IDataControl\IDataValidation;
 
-    final class Credential implements \IDataControl
+    class User implements IDataValidation
     {
-        public $Username = null;
-        public $Password = null;
 
-        // private $SessionID = null;
+        public $ID        = null;
+        public $person_ID = null;
+        public $username  = null;
+        public $password  = null;
+        public $is_active = null;
 
-        public function dataFetch(): ?bool
-        {
-            // TODO: Implement dataFetch() method.
-            return null;
-        }
 
         public function isValid(): bool
         {
             // TODO: Implement isValid() method.
             return true;
-        }
-
-        public function copyValuesFrom(object $_Data): Credential
-        {
-
-            foreach ($this as $key => $value) {
-
-                if(property_exists($_Data, $key)){
-                     $this->$key = $_Data->$key;
-                }
-            }
-
-            return $this;
         }
 
 

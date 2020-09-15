@@ -1,22 +1,22 @@
 <?php
 
+use Layer\RequestValidation\FileContentManagement;
 use Steampixel\Route;
 
-require_once 'layers/DataControl.php';
-require_once 'modules/APPLICATION/Model.php';
-require_once 'modules/APPLICATION/Controller.php';
-// Include router class
-include 'router/src/Steampixel/Route.php';
+require_once __DIR__ . '/layers/RequestValidation.php';
+require_once __DIR__ . '/modules/APPLICATION/Model.php';
+require_once __DIR__ . '/modules/APPLICATION/Controller.php';
+require_once __DIR__ . '/router/src/Steampixel/Route.php';
 
-// Define a global basepath
-define('BASEPATH', '/');
+const BASE_PATH = '/';
+
 
 class RouteConfig
 {
     private $Request;
     private $Response;
 
-    public function start(): void
+    final public function start(): void
     {
         $fileContent   = new FileContentManagement();
         $this->Request = $fileContent->getRequest();
@@ -30,18 +30,19 @@ class RouteConfig
             echo 'Welcome :-)';
         });
 
-        Route::add('/auth', function () {
-            $Controller = new APPLICATION\Controller\Handshake();
-            $Controller->UserLogin($this->Request);
+        Route::add('/handshake', function () {
+
+            new APPLICATION\Controller\Handshake($this->Request);
+
         }, ['post']);
 
         /* Route::add('/auth', function() {
-             $this->Controller = new APPLICATION\Handshake();
-             $this->Controller->UserLogin($this->Request);
+            $Controller = new APPLICATION\Controller\Handshake();
+            $Controller->UserLogin($this->Request);
          }, ['get', 'post']);*/
 
 
         // Run the Router with the given Basepath
-        Route::run(BASEPATH);
+        Route::run(BASE_PATH);
     }
 }
