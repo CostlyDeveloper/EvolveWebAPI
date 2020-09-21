@@ -30,9 +30,20 @@ class RouteConfig
             echo 'Welcome :-)';
         });
 
-        Route::add('/handshake', function () {
+        // region *** ELEMENTARY ***
 
-            new APPLICATION\Controller\Handshake($this->Request);
+        Route::add('/Elementary/User/Create', function () {
+
+            $controller = new ELEMENTARY\Controller\Handshake($this->Request);
+            $controller->UserLogin();
+
+        }, ['post']);
+
+        // endregion
+        Route::add('/Handshake/UserLogin', function () {
+
+            $controller = new APPLICATION\Controller\Handshake($this->Request);
+            $controller->UserLogin();
 
         }, ['post']);
 

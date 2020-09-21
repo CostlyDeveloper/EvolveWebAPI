@@ -20,7 +20,7 @@ namespace Layer\Messaging {
               $this->Message   = $_Message ? $_Message : null;*/
         }
 
-        final public function responseSetter(object $_Data): void
+        final public function responseSetter($_Data): void
         {
             $this->Response = $_Data;
         }
@@ -29,6 +29,7 @@ namespace Layer\Messaging {
         {
 
             // $this->returnJsonHttpResponse($this, $this->isValid());
+            var_dump($this);
             return 'tmp';
         }
 

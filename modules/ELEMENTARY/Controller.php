@@ -1,6 +1,6 @@
 <?php
 
-namespace APPLICATION\Controller {
+namespace ELEMENTARY\Controller {
 
 
     require_once __DIR__ . '/../../layers/DataHub.php';

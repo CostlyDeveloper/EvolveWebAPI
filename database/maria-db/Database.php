@@ -21,7 +21,7 @@ namespace MariaDB {
             $statemant = self::connect()->prepare($query);
             $statemant->execute($params);
             if (explode(' ', $query)[0] === 'SELECT') {
-                $data = $statemant->fetchAll();
+                $data = $statemant->fetchAll(PDO::FETCH_OBJ);
                 // $data = $statemant->fetchObject();
                 return $data;
             }
@@ -32,6 +32,7 @@ namespace MariaDB {
             $dataSourceName = "mysql:dbname=" . self::$dbName . ";port=" . self::$port . ";host=" . self::$host . ";charset=utf8";
             $pdo            = new PDO($dataSourceName, self::$username, self::$password);
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false); // vraća int ako je int u bazi
             return $pdo;
         }
     }
@@ -58,9 +59,14 @@ namespace MariaDB {
                             $queryCriteria = $queryCriteria . ' AND ';
                         }
 
+                        // TODO napravti prepoznavanje ako je u kriteriji više istih propertija
+
                         $queryCriteria = $queryCriteria . ' ' . $criteriaItem->Property . ' = :' . $criteriaItem->Property . ' ';
                         $template      = array(':' . $criteriaItem->Property => $criteriaItem->Value);
-                        $params        = array_merge($params, $template);
+
+
+                        $params = array_merge($params, $template);
+
 
                     } elseif ($criteriaItem->IsLIKE) {
                         // TODO

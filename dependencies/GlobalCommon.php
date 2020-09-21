@@ -31,10 +31,15 @@ namespace GlobalCommon\DataControl {
 
         final public function copyValuesFrom(object $_Data): self
         {
+
             foreach ($this as $key => $value) {
 
                 if (property_exists($_Data, $key)) {
                     $this->$key = $_Data->$key;
+                } else if (property_exists($_Data, strtolower($key))) {
+
+                    $lowercaseKey = strtolower($key);
+                    $this->$key   = $_Data->$lowercaseKey;
                 }
             }
 
