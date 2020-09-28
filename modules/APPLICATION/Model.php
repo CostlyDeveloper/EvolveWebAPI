@@ -4,7 +4,7 @@ namespace APPLICATION\Model {
 
     require_once __DIR__ . '/../../dependencies/GlobalCommon.php';
 
-    use GlobalCommon\IDataControl\IDataValidation;
+    use GlobalCommon\IDataValidation;
 
     class User implements IDataValidation
     {

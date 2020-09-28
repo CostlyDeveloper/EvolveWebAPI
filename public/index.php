@@ -1,5 +1,8 @@
 <?php
 
+
+use APP\App;
+
 require_once '../App.php';
 
 $app = new App();

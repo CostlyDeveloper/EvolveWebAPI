@@ -10,7 +10,7 @@ namespace DataHub {
 
     require_once 'storage-fetch/JsonFetch.php';
     require_once __DIR__ . '/storage-fetch/JsonFetch.php';
-    require_once __DIR__ . '/../database/maria-db/Database.php';
+    require_once __DIR__ . '/../storage/maria-db/Database.php';
 
     class Repository
     {

@@ -1,10 +1,28 @@
 <?php
 
+namespace GlobalCommon {
 
-namespace GlobalCommon\IDataControl {
+    require_once __DIR__ . '/../layers/Messaging.php';
+
+    use Layer\DataFormatter\StringFormatter;
+
+    // region *** Interface ***
+
+
     interface IDataValidation
     {
         public function isValid(): bool;
+    }
+
+    interface ICRUD
+    {
+        function create();
+
+        function remove();
+
+        function update();
+
+        function delete();
     }
 
     interface IDataModify
@@ -12,21 +30,15 @@ namespace GlobalCommon\IDataControl {
         public function copyValuesFrom(object $_Data);
     }
 
-    interface ICriteriaItemList
+    interface IDataControl extends IDataValidation, IDataModify
     {
-
     }
-}
 
-namespace GlobalCommon\DataControl {
+    // endregion
 
-    require_once __DIR__ . '/../layers/Messaging.php';
+    // region *** Class ***
 
-    use GlobalCommon\IDataControl\IDataModify;
-    use Layer\DataFormatter\StringFormatter;
-
-
-    class DataValidation implements IDataModify
+    abstract class DataValidation implements IDataModify
     {
 
         final public function copyValuesFrom(object $_Data): self
@@ -37,7 +49,6 @@ namespace GlobalCommon\DataControl {
                 if (property_exists($_Data, $key)) {
                     $this->$key = $_Data->$key;
                 } else if (property_exists($_Data, strtolower($key))) {
-
                     $lowercaseKey = strtolower($key);
                     $this->$key   = $_Data->$lowercaseKey;
                 }
@@ -45,8 +56,8 @@ namespace GlobalCommon\DataControl {
 
             return $this;
         }
-    }
 
+    }
 
     class CriteriaItem extends DataValidation
     {
@@ -81,4 +92,6 @@ namespace GlobalCommon\DataControl {
         }
 
     }
+    // endregion
+
 }

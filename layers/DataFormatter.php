@@ -3,7 +3,7 @@
 
 namespace Layer\DataFormatter {
 
-    use GlobalCommon\DataControl\CriteriaItem;
+    use GlobalCommon\CriteriaItem;
     use Layer\Messaging\Request;
 
     class FormatCriteriaItemList

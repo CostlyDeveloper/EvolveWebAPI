@@ -5,8 +5,8 @@ namespace APPLICATION\Custom;
 
 require_once __DIR__ . '/../../layers/RequestValidation.php';
 
-use GlobalCommon\DataControl\DataValidation;
-use GlobalCommon\IDataControl\IDataValidation;
+use GlobalCommon\DataValidation;
+use GlobalCommon\IDataValidation;
 
 final class Credential extends DataValidation implements IDataValidation
 {

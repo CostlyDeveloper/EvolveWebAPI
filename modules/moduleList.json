@@ -1,0 +1,26 @@
+{
+  "ModuleList": [
+    {
+      "Name": "Elementary",
+      "ModelList": [
+        {
+          "Name": "User"
+        },
+        {
+          "Name": "Person"
+        }
+      ]
+    },
+    {
+      "Name": "Application",
+      "ModelList": [
+        {
+          "Name": "User"
+        },
+        {
+          "Name": "Person"
+        }
+      ]
+    }
+  ]
+}

@@ -3,7 +3,9 @@
 
 namespace Layer\RequestValidation {
 
-    use Layer\Messaging\Request;
+    require_once __DIR__ . '/../dependencies/IO.php';
+
+    use IO\RequestProcess;
 
     class FileContentManagement
     {
@@ -12,7 +14,7 @@ namespace Layer\RequestValidation {
 
         function __construct()
         {
-            $this->Request = new Request();
+            $this->Request = new RequestProcess();
             $this->cors();
             $this->contentListener();
             $this->setRequest();
@@ -61,7 +63,7 @@ namespace Layer\RequestValidation {
         private function setRequest(): void
         {
             if ($this->IsValid()) {
-                $this->Request->ValueSetter($this->FileContent);
+                $this->Request->valueSetter($this->FileContent);
             }
         }
 
@@ -70,7 +72,7 @@ namespace Layer\RequestValidation {
             return is_object($this->FileContent) && is_object($this->FileContent->Request);
         }
 
-        final public function getRequest(): ?Request
+        final public function getRequest(): ?RequestProcess
         {
             return $this->Request->IsValid() ? $this->Request : null;
 
