@@ -10,14 +10,14 @@ namespace IO {
     class RequestProcess implements IDataValidation
     {
 
-        public $Request;
-        public $SessionID;
+        public ?object $Request;
+        public ?object $SessionID;
 
         function __construct()
         {
         }
 
-        final public function valueSetter($_Data): void
+        final public function valueSetter(object $_Data): void
         {
             $this->Request   = is_object($_Data->Request) ? $_Data->Request : null;
             $this->SessionID = is_object($_Data->SessionID) ? $_Data->SessionID : null;
@@ -30,28 +30,32 @@ namespace IO {
         }
     }
 
-    class ResponseProcess
+    class ResponseProcess extends ResponseMessage
     {
-        public         $SessionID = null;
-        public         $Response  = null;
-        public ?string $Message   = null;
-        public ?string $Code      = null;
-        public ?string $Title     = null;
+        public $SessionID = null;
+        public $Response  = null;
 
         public function __construct()
         {
         }
 
-        final public function responseSetter($_Data = null): void
+        final public function sendResponse($_Data): void
+        {
+            $this->responseSetter($_Data);
+            $this->send();
+        }
+
+        final private function responseSetter($_Data = null): void
         {
             $this->Response = $_Data;
         }
 
-        final public function send(): string
+        final public function send(): void
         {
-            $this->returnJsonHttpResponse($this, $this->isValid());
-            // var_dump($this);
-            return 'tmp';
+            // $this->Response = null;
+            $this->returnJsonHttpResponse($this, true);
+            // $this->returnJsonHttpResponse($this, $this->isValid());
+            var_dump($this);
         }
 
         private function returnJsonHttpResponse(object $_Data, bool $_Success): void
@@ -94,20 +98,17 @@ namespace IO {
 
         final public function throwError(string $_title = '', string $_message = '', string $_code = ''): void
         {
-            $responseMessage = new ResponseMessage();
-            $responseMessage->setTitle($_title);
-            $responseMessage->setMessage($_message);
-            $responseMessage->setCode($_code);
-            $this->setResponseMessage($responseMessage);
-
-            // $this->returnJsonHttpResponse($this, false);
+            // set error message
+            $this->setResponseMessage($_title, $_message, $_code);
+            // throw an error
+            $this->returnJsonHttpResponse($this, false);
         }
 
-        final public function setResponseMessage(ResponseMessage $_responseMessage): void
+        final public function setResponseMessage(string $_title = '', string $_message = '', string $_code = ''): void
         {
-            $this->Message = $_responseMessage->Message;
-            $this->Code    = $_responseMessage->Code;
-            $this->Title   = $_responseMessage->Title;
+            $this->Message = $_message;
+            $this->Code    = $_code;
+            $this->Title   = $_title;
         }
     }
 

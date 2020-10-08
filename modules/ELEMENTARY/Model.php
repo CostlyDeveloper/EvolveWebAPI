@@ -4,8 +4,9 @@ namespace ELEMENTARY\Model {
 
     require_once __DIR__ . '/../../dependencies/CRUDController.php';
 
-    use GlobalCommon\DataValidation;
+    use GlobalCommon\BasicModel;
     use GlobalCommon\IDataControl;
+    use GlobalCommon\IDataHubActions;
 
     class Person
     {
@@ -27,7 +28,7 @@ namespace ELEMENTARY\Model {
         public $is_active = null;
     }
 
-    class User extends DataValidation implements IDataControl
+    class User extends BasicModel implements IDataControl
     {
 
         public ?int    $ID             = null;
@@ -35,38 +36,42 @@ namespace ELEMENTARY\Model {
         public ?int    $UserCategoryID = null;
         public ?bool   $IsActive       = null;
 
-        public function isValid(): bool
+        final public function isValid(): bool
         {
             // TODO: Implement isValid() method.
             return true;
         }
 
 
-        function create()
+        final public function create(IDataHubActions $_dataHub): ?self
         {
-            // var_dump('TODO: Implement create() method.');
+            // region *** prepare data for storage ***
+            $data['person_id']        = $this->PersonID;
+            $data['user_category_id'] = $this->UserCategoryID;
+            $data['is_active']        = $this->IsActive;
+            // endregion
 
-
-            var_dump($this);
-            // TODO: Implement create() method.
+            $dbLastInsertID = $_dataHub->dataHubCreate($data, 'elementary_user');
+            if ($dbLastInsertID) {
+                $this->ID = $dbLastInsertID;
+                return $this;
+            }
+            return null;
         }
 
-        function remove()
+        final public function read()
         {
-            var_dump('TODO: Implement remove() method.');
-            // TODO: Implement remove() method.
+
         }
 
-        function update()
+        final public function update()
         {
-            var_dump('TODO: Implement update() method.');
-            // TODO: Implement update() method.
+
         }
 
-        function delete()
+        final public function delete()
         {
-            var_dump('TODO: Implement delete() method.');
-            // TODO: Implement delete() method.
+
         }
     }
 

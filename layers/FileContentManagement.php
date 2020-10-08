@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Layer\RequestValidation {
+namespace Layer {
 
     require_once __DIR__ . '/../dependencies/IO.php';
 
@@ -14,10 +14,10 @@ namespace Layer\RequestValidation {
 
         function __construct()
         {
-            $this->Request = new RequestProcess();
+            // $this->Request = new RequestProcess();
             $this->cors();
             $this->contentListener();
-            $this->setRequest();
+            // $this->setRequest();
         }
 
         private function cors(): void
@@ -60,17 +60,26 @@ namespace Layer\RequestValidation {
             }
         }
 
-        private function setRequest(): void
+        final public function getFileContent(): ?object
         {
+
             if ($this->IsValid()) {
-                $this->Request->valueSetter($this->FileContent);
+                return $this->FileContent;
             }
+
+            return null;
+
+            /* if ($this->IsValid()) {
+                 $this->Request->valueSetter($this->FileContent);
+             }*/
         }
 
-        private function IsValid(): bool
-        {
-            return is_object($this->FileContent) && is_object($this->FileContent->Request);
-        }
+        /*private function getRequest(): void
+                {
+                    if ($this->IsValid()) {
+                        $this->Request->valueSetter($this->FileContent);
+                    }
+                }*/
 
         final public function getRequest(): ?RequestProcess
         {
@@ -79,6 +88,13 @@ namespace Layer\RequestValidation {
             /*$encoded = json_encode($this->Request);
             return json_decode($encoded)*/
 
+        }
+
+        // TODO provjeriti ako je ovo potrebno
+
+        private function IsValid(): bool
+        {
+            return is_object($this->FileContent) && is_object($this->FileContent->Request);
         }
 
 

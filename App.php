@@ -2,22 +2,21 @@
 
 
 namespace APP {
-    require_once 'layers/Dev.php';
     require_once 'router/RouteConfig.php';
 
+    use IO\ResponseProcess;
     use router\RouteConfig;
 
     class App
     {
 
-        public $dev;
-        public $routes;
+        private RouteConfig     $routes;
+        private ResponseProcess $response;
 
-        public function __construct()
+        final public function start(): void
         {
-            // $this->dev    = new Dev();
-            $this->routes = new RouteConfig();
+            $this->response = new ResponseProcess();
+            $this->routes   = new RouteConfig($this->response);
         }
-
     }
 }

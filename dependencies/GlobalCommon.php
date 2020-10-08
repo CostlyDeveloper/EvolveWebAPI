@@ -3,6 +3,7 @@
 namespace GlobalCommon {
 
     require_once __DIR__ . '/../layers/Messaging.php';
+    require_once __DIR__ . '/../layers/DataHub.php';
 
     use Layer\DataFormatter\StringFormatter;
 
@@ -18,11 +19,33 @@ namespace GlobalCommon {
     {
         function create();
 
-        function remove();
+        function read();
 
         function update();
 
         function delete();
+    }
+
+    interface IDatabaseActions
+    {
+        public function dbCreate(array $_data, string $tableName);
+
+        public function dbRead(object $_data);
+
+        public function dbUpdate(object $_data);
+
+        public function dbDelete(object $_data);
+    }
+
+    interface IDataHubActions
+    {
+        public function dataHubCreate(array $_data, string $tableName);
+
+        public function dataHubRead(object $_data);
+
+        public function dataHubUpdate(object $_data);
+
+        public function dataHubDelete(object $_data);
     }
 
     interface IDataModify
@@ -55,6 +78,16 @@ namespace GlobalCommon {
             }
 
             return $this;
+        }
+
+    }
+
+    abstract class BasicModel extends DataValidation
+    {
+
+        public function __construct()
+        {
+
         }
 
     }

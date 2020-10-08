@@ -1,26 +1,30 @@
 <?php
 
-// require_once '../modules/ELEMENTARY/Model.php';
 namespace LayerCRUD {
 
+    require_once __DIR__ . '/../storage/mysql/MySQL.php';
 
-    use GlobalCommon\IDataControl;
+    use DataHub;
+    use GlobalCommon\BasicModel;
+    use IO\RequestProcess;
     use IO\ResponseProcess;
-    use Layer\Messaging\ResponseMessage;
+    use MySQL;
 
     class CRUDController
     {
 
-        public              $module;
-        public              $controller;
-        public              $action;
-        public              $request;
-        public IDataControl $model;
+        public string                             $module;
+        public string                             $controller;
+        public string                             $action;
+        public RequestProcess                     $request;
+        public ResponseProcess                    $response;
+        public BasicModel                         $model;
 
-        function __construct(string $_path, object $_request)
+        function __construct(string $_path, RequestProcess $_request, ResponseProcess $_response)
         {
             $path             = explode("/", $_path);
             $this->request    = $_request;
+            $this->response   = $_response;
             $this->module     = strtoupper($path[1]);
             $this->controller = $path[2];
             $this->action     = strtolower($path[3]);
@@ -30,18 +34,31 @@ namespace LayerCRUD {
 
         private function process(): void
         {
+            // let's put it together class path, it must match with namespace namespace MODULE_NAME\Model it is placed /modules/MODULE_NAME/Model.php - and the class name in file
             $class       = $this->module . DIRECTORY_SEPARATOR . 'Model' . DIRECTORY_SEPARATOR . $this->controller;
             $this->model = new $class();
+            // it checks the action(method) is exposed or not / private or public
             $this->isCallableValidation($this->model, $this->action);
+            // make sure that we filter and validate only data in request that fit to our own object
             $this->model->copyValuesFrom($this->request);
+
+            // every model validate itself
             if ($this->model->isValid()) {
-                $this->model->{$this->action}();
+
+                $dataHub = new DataHub();
+
+                // TODO napraviti više opcija tj. više različitih tehnologija baza koje će se priključiti na solution
+                $dataHub->setDatabase(new MySQL());
+
+                $modelDataResponse = $this->model->{$this->action}($dataHub);
+                if ($modelDataResponse) {
+                    var_dump($modelDataResponse);
+                    $this->response->setResponseMessage('OK');
+                    $this->response->sendResponse($modelDataResponse);
+                }
+
             } else {
-                $responseMessage = new ResponseMessage();
-                $responseMessage->setTitle('ERROR');
-                $response = new ResponseProcess();
-                $response->setResponseMessage($responseMessage);
-                $response->throwError();
+                $this->response->throwError('ERROR', 'Request validation error.');
             }
 
         }
@@ -49,11 +66,7 @@ namespace LayerCRUD {
         private function isCallableValidation(object $_model, string $_action): void
         {
             if (!is_callable(array($_model, $_action))) {
-                $responseMessage = new ResponseMessage();
-                $responseMessage->setTitle('ERROR');
-                $response = new ResponseProcess();
-                $response->setResponseMessage($responseMessage);
-                $response->throwError();
+                $this->response->throwError('ERROR', 'Action not exist.');
                 die();
             }
         }
