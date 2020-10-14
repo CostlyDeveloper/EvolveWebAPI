@@ -12,23 +12,23 @@ class DataHub implements IDataHubActions
         $this->database = $_database;
     }
 
-    final public function dataHubCreate(array $_data, string $tableName): ?int
+    final public function dataHubCreate(array $_data, string $tableName): ?object
     {
-        return $this->database->dbCreate($_data, $tableName);
+        return $this->database->dbActionCreate($_data, $tableName);
     }
 
-    final function dataHubRead(object $_data)
+    final public function dataHubRead(array $_data, string $tableName): ?object
     {
-        $this->database->dbRead($_data);
+        return $this->database->dbActionRead($_data, $tableName);
     }
 
-    final function dataHubUpdate(object $_data)
+    final public function dataHubUpdate(array $_data, string $tableName): ?object
     {
-        $this->database->dbUpdate($_data);
+        return $this->database->dbActionUpdate($_data, $tableName);
     }
 
-    final function dataHubDelete(object $_data)
+    final public function dataHubDelete(array $_data, string $tableName): ?object
     {
-        $this->database->dbDelete($_data);
+        return $this->database->dbActionDelete($_data, $tableName);
     }
 }

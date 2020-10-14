@@ -53,7 +53,7 @@ namespace IO {
         final public function send(): void
         {
             // $this->Response = null;
-            $this->returnJsonHttpResponse($this, true);
+            // $this->returnJsonHttpResponse($this, true);
             // $this->returnJsonHttpResponse($this, $this->isValid());
             var_dump($this);
         }

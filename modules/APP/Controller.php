@@ -1,14 +1,14 @@
 <?php
 
-namespace ELEMENTARY\Controller {
+namespace APPLICATION\Controller {
 
 
     require_once __DIR__ . '/../../layers/DataHubOLD.php';
     require_once __DIR__ . '/../../layers/DataFormatter.php';
     require_once __DIR__ . '/../../modules/APPLICATION/Custom.php';
-    require_once __DIR__ . '/../../modules/ELEMENTARY/Model.php';
+    require_once __DIR__ . '/../../modules/BASIC/Model.php';
 
-    use ELEMENTARY\Model\User;
+    use BASIC\Model\User;
     use Layer\DataFormatter\FormatCriteriaItemList;
     use Layer\Messaging\Request;
     use Layer\Messaging\Response;
@@ -74,6 +74,5 @@ namespace ELEMENTARY\Controller {
 
 
     }
-
 
 }

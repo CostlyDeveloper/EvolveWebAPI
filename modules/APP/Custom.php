@@ -6,9 +6,8 @@ namespace APPLICATION\Custom;
 require_once __DIR__ . '/../../layers/FileContentManagement.php';
 
 use GlobalCommon\DataValidation;
-use GlobalCommon\IDataValidation;
 
-final class Credential extends DataValidation implements IDataValidation
+/*final class Credential extends DataValidation implements IDataValidation
 {
     public $username = null;
     public $password = null;
@@ -23,5 +22,5 @@ final class Credential extends DataValidation implements IDataValidation
     }
 
 
-}
+}*/
 

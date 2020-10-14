@@ -40,7 +40,7 @@ namespace LayerCRUD {
             // it checks the action(method) is exposed or not / private or public
             $this->isCallableValidation($this->model, $this->action);
             // make sure that we filter and validate only data in request that fit to our own object
-            $this->model->copyValuesFrom($this->request);
+            $this->model->copyValuesFrom($this->request->Request);
 
             // every model validate itself
             if ($this->model->isValid()) {
@@ -52,9 +52,10 @@ namespace LayerCRUD {
 
                 $modelDataResponse = $this->model->{$this->action}($dataHub);
                 if ($modelDataResponse) {
-                    var_dump($modelDataResponse);
                     $this->response->setResponseMessage('OK');
                     $this->response->sendResponse($modelDataResponse);
+                } else {
+                    $this->response->throwError('ERROR', 'Request error.');
                 }
 
             } else {

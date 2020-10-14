@@ -63,7 +63,7 @@ namespace router {
 
         final function isValidRoute(string $_route): void
         {
-            $crudActions = array('create', 'remove', 'update', 'delete');
+            $crudActions = array('create', 'read', 'update', 'delete');
             $str         = file_get_contents('../modules/moduleList.json');
             $moduleList  = json_decode($str, false);
             $path        = explode("/", $_route);
